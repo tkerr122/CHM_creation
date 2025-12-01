@@ -29,3 +29,6 @@ Thumbs.db
 
 # To-do file
 todo
+
+# Linting files
+stubs/
