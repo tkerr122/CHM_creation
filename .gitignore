@@ -32,3 +32,6 @@ todo
 
 # Linting files
 stubs/
+
+# Gitignore
+.gitignore

@@ -13,6 +13,7 @@ def create_CHM(input_dir, output_file, cores):
         ### STEP 1: Create the pipeline
         # Load in point cloud
         las = pylasr.reader_coverage() 
+        info = pylasr.info()
         
         # Delete noise points
         low_noise = pylasr.delete_points(filter=["Classification == 7"])
@@ -31,10 +32,14 @@ def create_CHM(input_dir, output_file, cores):
         chm = pylasr.rasterize(res=4, window=2.0, operators=["max"], ofile=output_file) 
         
         ### STEP 2: Execute the pipeline
-        pipeline = las + low_noise + high_noise + above_threshold + dtm + nlas + chm
-        pipeline.set_concurrent_files_strategy(ncores=cores)
-        pipeline.set_verbose(False)
-        pipeline.set_progress(True)
+        # pipeline = las + low_noise + high_noise + above_threshold + dtm + nlas + chm
+        # pipeline.set_concurrent_files_strategy(ncores=cores)
+        # pipeline.set_verbose(False)
+        # pipeline.set_progress(True)
+        pipeline = las + info 
+        pipeline.set_sequential_strategy()
+        # pipeline.set_concurrent_files_strategy(ncores=cores)
+        pipeline.set_verbose(True)
         result = pipeline.execute(input_dir)
 
         if result['success']:
